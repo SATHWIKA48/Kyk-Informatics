@@ -1,0 +1,18 @@
+{% extends "portal/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+  <h1>Your applications</h1>
+  <p class="lede">Signed in as {{ user.first_name|default:user.username }}.</p>
+
+  {% for app in applications %}
+    <div class="card">
+      <h3 style="font-family:var(--serif); font-size:18px; margin:0 0 10px; font-weight:500;">{{ app.job.title }}</h3>
+      <span class="badge {{ app.status }}">{{ app.get_status_display }}</span>
+      <p style="color:var(--text-dim); font-size:12.5px; margin:12px 0 0;">Applied {{ app.created_at|date:"M j, Y" }}</p>
+    </div>
+  {% empty %}
+    <p class="lede">You haven't applied to any roles yet.</p>
+  {% endfor %}
+
+  <a class="btn btn-ghost" href="/jobs/">Browse open roles</a>
+{% endblock %}

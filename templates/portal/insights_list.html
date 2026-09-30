@@ -1,0 +1,21 @@
+{% extends "portal/base.html" %}
+{% block title %}Insights{% endblock %}
+{% block content %}
+  <h1>Insights</h1>
+  <p class="lede">Notes and updates from KYK Informatics.</p>
+
+  {% for post in posts %}
+    <div class="card">
+      <h3 style="font-family:var(--serif); font-size:19px; margin:0 0 6px; font-weight:500;">
+        <a href="/insights/{{ post.slug }}/" style="text-decoration:none;">{{ post.title }}</a>
+      </h3>
+      <p style="color:var(--text-dim); font-size:12.5px; margin:0 0 12px;">{{ post.created_at|date:"M j, Y" }}</p>
+      <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin:0 0 16px;">
+        {{ post.excerpt|default:post.body|truncatewords:30 }}
+      </p>
+      <a class="btn btn-ghost" href="/insights/{{ post.slug }}/">Read more</a>
+    </div>
+  {% empty %}
+    <p class="lede">No posts published yet — check back soon.</p>
+  {% endfor %}
+{% endblock %}

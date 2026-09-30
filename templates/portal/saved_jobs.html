@@ -1,0 +1,24 @@
+{% extends "portal/base.html" %}
+{% block title %}Saved Jobs{% endblock %}
+{% block content %}
+  <h1>Saved jobs</h1>
+  <p class="lede">Roles you've bookmarked to apply to later.</p>
+
+  {% for item in saved %}
+    <div class="card">
+      <h3 style="font-family:var(--serif); font-size:18px; margin:0 0 8px; font-weight:500;">{{ item.job.title }}</h3>
+      <p style="color:var(--text-muted); font-size:13.5px; margin:0 0 14px;">
+        {{ item.job.get_employment_type_display }}{% if item.job.location %} · {{ item.job.location }}{% endif %}
+      </p>
+      <a class="btn btn-ghost" href="/jobs/{{ item.job.id }}/">View &amp; apply</a>
+      <form method="post" action="/jobs/{{ item.job.id }}/save/" style="display:inline;">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="/saved-jobs/">
+        <button type="submit" class="btn btn-ghost">Remove</button>
+      </form>
+    </div>
+  {% empty %}
+    <p class="lede">You haven't saved any roles yet.</p>
+    <a class="btn btn-ghost" href="/jobs/">Browse open roles</a>
+  {% endfor %}
+{% endblock %}

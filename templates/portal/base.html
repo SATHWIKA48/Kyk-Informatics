@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}KYK Informatics{% endblock %} — Candidate Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c1119; --surface:#161f30; --surface-2:#1c2740;
+    --line: rgba(237,234,224,0.12); --line-strong: rgba(237,234,224,0.2);
+    --text:#eeece2; --text-muted:#98a2ba; --text-dim:#5c6884;
+    --k1:#c9a227; --y:#49b6a6; --k2:#8b7fd6;
+    --serif:'Fraunces', Georgia, serif; --sans:'Space Grotesk', Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--ink);
+    background-image: radial-gradient(ellipse 700px 420px at 10% 0%, rgba(201,162,39,0.06), transparent 55%),
+                       radial-gradient(ellipse 700px 420px at 100% 100%, rgba(139,127,214,0.06), transparent 55%);
+    color:var(--text); font-family:var(--sans); min-height:100vh; display:flex; flex-direction:column;
+  }
+  a{ color:inherit; }
+  .nav{ border-bottom:1px solid var(--line); padding:18px 28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .brand{ font-family:var(--serif); font-size:19px; text-decoration:none; }
+  .navlinks{ display:flex; gap:22px; font-size:14px; color:var(--text-muted); flex-wrap:wrap; }
+  .navlinks a{ text-decoration:none; }
+  .navlinks a:hover{ color:var(--text); }
+  main{ flex:1; max-width:640px; margin:0 auto; padding:64px 24px; width:100%; }
+  h1{ font-family:var(--serif); font-weight:500; font-size:clamp(26px,4vw,34px); margin:0 0 10px; }
+  p.lede{ color:var(--text-muted); margin:0 0 32px; line-height:1.6; font-size:15.5px; }
+  .card{ border:1px solid var(--line); border-radius:4px; padding:26px; background:var(--surface); margin-bottom:16px; }
+  label{ display:block; font-size:12.5px; color:var(--text-dim); margin-bottom:6px; margin-top:14px; }
+  label:first-child{ margin-top:0; }
+  input, textarea, select{
+    width:100%; background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    padding:11px 13px; border-radius:3px; font-family:var(--sans); font-size:14.5px; outline:none;
+  }
+  input:focus, textarea:focus, select:focus{ border-color: var(--k1); }
+  textarea{ resize:vertical; }
+  button, .btn{
+    font-family:var(--sans); font-size:14.5px; padding:12px 22px; border-radius:3px; border:none;
+    background:var(--text); color:var(--ink); cursor:pointer; text-decoration:none; display:inline-block; margin-top:18px;
+  }
+  .btn-ghost{ background:transparent; border:1px solid var(--line-strong); color:var(--text); }
+  .badge{ font-size:12px; padding:5px 12px; border-radius:20px; border:1px solid var(--line-strong); color:var(--text-muted); display:inline-block; }
+  .badge.submitted{ color:var(--y); border-color:var(--y); }
+  .badge.under_review{ color:var(--k2); border-color:var(--k2); }
+  .badge.interview, .badge.offer{ color:var(--k1); border-color:var(--k1); }
+  .badge.rejected{ color:#d98686; border-color:#d98686; }
+  ul.errorlist{ color:#e0a0a0; font-size:13px; padding-left:18px; margin:6px 0 0; list-style:disc; }
+  .helptext{ font-size:12px; color:var(--text-dim); margin-top:4px; }
+  footer{ text-align:center; padding:24px; font-size:12.5px; color:var(--text-dim); border-top:1px solid var(--line); }
+</style>
+</head>
+<body>
+  <div class="nav">
+    <a class="brand" href="/">KYK Informatics</a>
+    <div class="navlinks">
+      <a href="/jobs/">Careers</a>
+      <a href="/services/">Services</a>
+      <a href="/insights/">Insights</a>
+      {% if user.is_authenticated %}
+        <a href="/dashboard/">Dashboard</a>
+        <a href="/saved-jobs/">Saved Jobs</a>
+        <a href="/accounts/profile/">Profile</a>
+        {% if user.is_staff %}<a href="/hr/analytics/">HR Analytics</a>{% endif %}
+        <a href="/accounts/logout/">Sign out</a>
+      {% else %}
+        <a href="/accounts/login/">Sign in</a>
+        <a href="/accounts/signup/">Sign up</a>
+      {% endif %}
+    </div>
+  </div>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>Key to Your Kognitio</footer>
+</body>
+</html>

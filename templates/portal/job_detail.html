@@ -1,0 +1,30 @@
+{% extends "portal/base.html" %}
+{% block title %}{{ job.title }}{% endblock %}
+{% block content %}
+  <h1>{{ job.title }}</h1>
+  <p class="lede">
+    {{ job.get_employment_type_display }}{% if job.location %} · {{ job.location }}{% endif %}{% if job.is_remote %} · Remote{% endif %}
+  </p>
+  <div class="card">
+    <p style="color:var(--text-muted); line-height:1.7; white-space:pre-line; margin:0;">{{ job.summary }}</p>
+  </div>
+
+  {% if already_applied %}
+    <span class="badge submitted">You've already applied — check your dashboard</span><br>
+    <a class="btn btn-ghost" href="/dashboard/">Go to dashboard</a>
+  {% elif user.is_authenticated %}
+    <a class="btn" href="/jobs/{{ job.id }}/apply/">Apply for this role</a>
+  {% else %}
+    <a class="btn" href="/accounts/login/?next=/jobs/{{ job.id }}/apply/">Sign in to apply</a>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <form method="post" action="/jobs/{{ job.id }}/save/" style="display:inline;">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="/jobs/{{ job.id }}/">
+      <button type="submit" class="btn btn-ghost">
+        {% if already_saved %}★ Saved{% else %}☆ Save for later{% endif %}
+      </button>
+    </form>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "portal/base.html" %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+  <h1>Create your candidate account</h1>
+  <p class="lede">Sign up to apply for roles and track your application status.</p>
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {{ field.errors }}
+        {% if field.help_text %}<div class="helptext">{{ field.help_text }}</div>{% endif %}
+      {% endfor %}
+      <button type="submit">Create account</button>
+    </form>
+  </div>
+  <p class="lede">Already have an account? <a href="/accounts/login/">Sign in</a></p>
+{% endblock %}

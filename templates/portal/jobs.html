@@ -1,0 +1,30 @@
+{% extends "portal/base.html" %}
+{% block title %}Careers{% endblock %}
+{% block content %}
+  <h1>Open roles</h1>
+  <p class="lede">Browse current openings across KYK Informatics.</p>
+
+  {% for job in jobs %}
+    <div class="card">
+      <h3 style="font-family:var(--serif); font-size:19px; margin:0 0 6px; font-weight:500;">{{ job.title }}</h3>
+      <p style="color:var(--text-muted); font-size:13.5px; margin:0 0 12px;">
+        {{ job.get_employment_type_display }}{% if job.location %} · {{ job.location }}{% endif %}{% if job.is_remote %} · Remote{% endif %}
+      </p>
+      <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin:0;">{{ job.summary|truncatewords:28 }}</p>
+      <a class="btn btn-ghost" href="/jobs/{{ job.id }}/">
+        {% if job.id in applied_ids %}View application{% else %}View &amp; apply{% endif %}
+      </a>
+      {% if user.is_authenticated %}
+        <form method="post" action="/jobs/{{ job.id }}/save/" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="/jobs/">
+          <button type="submit" class="btn btn-ghost">
+            {% if job.id in saved_ids %}★ Saved{% else %}☆ Save{% endif %}
+          </button>
+        </form>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p class="lede">No open roles right now — check back soon.</p>
+  {% endfor %}
+{% endblock %}

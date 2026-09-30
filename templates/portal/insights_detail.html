@@ -1,0 +1,10 @@
+{% extends "portal/base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+  <h1>{{ post.title }}</h1>
+  <p class="lede">{{ post.created_at|date:"F j, Y" }}</p>
+  <div class="card">
+    <p style="color:var(--text-muted); line-height:1.75; white-space:pre-line; margin:0;">{{ post.body }}</p>
+  </div>
+  <a class="btn btn-ghost" href="/insights/">Back to Insights</a>
+{% endblock %}

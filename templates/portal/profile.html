@@ -1,0 +1,21 @@
+{% extends "portal/base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+  <h1>Your profile</h1>
+  <p class="lede">Username: <strong style="color:var(--text);">{{ user.username }}</strong> (can't be changed here)</p>
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {{ field.errors }}
+      {% endfor %}
+      <button type="submit">Save changes</button>
+    </form>
+  </div>
+
+  <p class="lede">Want to change your password instead? <a href="/accounts/password-reset/">Reset it via email</a>.</p>
+{% endblock %}
