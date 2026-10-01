@@ -3,7 +3,6 @@ Django settings for the KYK Technologies backend.
 """
 import os
 from pathlib import Path
-import os
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,6 +13,9 @@ SECRET_KEY = os.environ.get("KYK_SECRET_KEY", "dev-only-secret-change-me")
 DEBUG = os.environ.get("KYK_DEBUG", "1") == "1"
 
 ALLOWED_HOSTS = os.environ.get("KYK_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+CSRF_TRUSTED_ORIGINS = [
+    origin for origin in os.environ.get("KYK_CSRF_TRUSTED_ORIGINS", "").split(",") if origin
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -27,7 +29,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # "django.middleware.security.SecurityMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -86,6 +91,11 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -115,5 +125,5 @@ KYK_DOMAIN_KEYWORDS = {
     "software": ["app", "website", "software", "platform", "integration", "api", "portal", "automation"],
     "ai": ["ai", "agi", "asi", "machine learning", "ml", "agent", "generative", "intelligent", "automation"],
 }
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-6")
+# ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+# ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-6")
